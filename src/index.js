@@ -17,19 +17,28 @@ import Login from "./page/Login";
 import NewProduct from "./page/NewProduct";
 import Signup from "./page/Signup";
 
+import { store } from "./redux/index";
+import { Provider } from "react-redux";
+import Cart from "./page/Cart";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route index element={<Home />} />
-      <Route path="menu" element={<Menu />} />
+      <Route path="menu/:filterby" element={<Menu />} />
       <Route path="about" element={<About />} />
       <Route path="contact" element={<Contact />} />
       <Route path="login" element={<Login />} />
       <Route path="newproduct" element={<NewProduct />} />
       <Route path="signup" element={<Signup />} />
+      <Route path="cart" element={<Cart />} />
     </Route>
   )
 );
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<RouterProvider router={router} />);
+root.render(
+  <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
+);

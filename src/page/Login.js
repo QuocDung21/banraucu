@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { BsEmojiSmileUpsideDown } from "react-icons/bs";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux } from "../redux/userSilice";
 // import { useDispatch, useSelector } from "react-redux";
-// import { loginRedux } from "../redux/userSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,9 +16,9 @@ const Login = () => {
     password: "",
   });
   const navigate = useNavigate();
-  // const userData = useSelector((state) => state);
+  const userData = useSelector((state) => state);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleShowPassword = () => {
     setShowPassword((preve) => !preve);
@@ -33,38 +34,38 @@ const Login = () => {
     });
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const { email, password } = data;
-  //   if (email && password) {
-  //     const fetchData = await fetch(
-  //       `${process.env.REACT_APP_SERVER_DOMIN}/login`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "content-type": "application/json",
-  //         },
-  //         body: JSON.stringify(data),
-  //       }
-  //     );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = data;
+    if (email && password) {
+      const fetchData = await fetch(
+        `${process.env.REACT_APP_SERVER_DOMIN}/login`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-  //     const dataRes = await fetchData.json();
-  //     console.log(dataRes);
+      const dataRes = await fetchData.json();
+      console.log(dataRes);
+      console.log(userData);
+      toast(dataRes.message);
 
-  //     toast(dataRes.message);
+      if (dataRes.alert) {
+        dispatch(loginRedux(dataRes));
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      }
+    } else {
+      alert("Please Enter required fields");
+    }
+  };
 
-  //     if (dataRes.alert) {
-  //       dispatch(loginRedux(dataRes));
-  //       setTimeout(() => {
-  //         navigate("/");
-  //       }, 1000);
-  //     }
-
-  //     console.log(userData);
-  //   } else {
-  //     alert("Please Enter required fields");
-  //   }
-  // };
+  console.log(userData.user);
 
   return (
     <div className="p-3 md:p-4">
@@ -74,7 +75,7 @@ const Login = () => {
           <img src={loginSignupImage} className="w-full" />
         </div>
 
-        <form className="w-full py-3 flex flex-col" >
+        <form className="w-full py-3 flex flex-col" onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
           <input
             type={"email"}

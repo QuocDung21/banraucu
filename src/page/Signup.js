@@ -64,20 +64,19 @@ function Signup() {
             body: JSON.stringify(data),
           }
         );
-
         const dataRes = await fetchData.json();
         console.log(dataRes);
-
-        // alert(dataRes.message);
         toast(dataRes.message);
         if (dataRes.alert) {
           navigate("/login");
         }
       } else {
-        alert("password and confirm password not equal");
+        // alert("password and confirm password not equal");
+        toast("password and confirm password not equal");
       }
     } else {
-      alert("Please Enter required fields");
+      // alert("Please Enter required fields");
+      toast("Please Enter required fields");
     }
   };
 
@@ -176,7 +175,7 @@ function Signup() {
             Sign up
           </button>
         </form>
-        <p className="text-left text-sm mt-2">
+        <p className="text-center text-base mt-2">
           Already have account ?{" "}
           <Link to={"/login"} className="text-red-500 underline">
             Login
